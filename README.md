@@ -2,11 +2,17 @@
 SSSP solution using a new BFS strategy called BFS "expansion"
 or "step-expansion"
 
+# Time Complexity
+The algorithm runs in O(V + E*W) where W is the maximum edge weight in the graph.
+
+# Effectiveness
+The algorithm should be effective on any Directed Acyclic Graph. The algorithm is an improvement over naïve BFS SSSP. BFS SSSP will always produce correct output for any DAG if and only if edge weight is constant across all edges. BFS Step-Expansion SSSP corrects this. Therefore, BFSE is effective for any positive weighted DAG. I haven't tested negative edge weights.
+
 # Algorithm
-The algorithm introduces two new properties to store: factor
-and step. In order to use step-expansion, a graph must store 
-step for each edge. Factor can be stored or calculated at each 
-use of step-expansion without negatively affecting performance.
+The algorithm introduces two new properties: factor
+and step. In order to use step-expansion, a graph must track 
+step for each edge. The algorithm can be optimized a bit by storing 
+these values instead of finding them each time BFSE is called.
 
  * Factor: the minimum edge weight found in the graph
  * Step: A represenation of incremental traversal of a single edge
