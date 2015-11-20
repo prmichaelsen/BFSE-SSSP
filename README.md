@@ -1,6 +1,5 @@
-# Finding Single-Source Shortest Path using modifed Breadth-First-Search with "Step-Expansion"
-SSSP solution using a new BFS strategy called BFS "expansion"
-or "step-expansion". Step-expansion can solve SSSP on graphs with varying edge weight. 
+# Introduction to Step-Expansion
+This is an explanation on finding the single-source shortest path using a modifed breadth-first-search algorithm called  "step-expansion". Step-expansion can solve SSSP on graphs with varying edge weight. 
 It accomplishes this by simulating extra steps in the traversal process by "expanding"
 a large weighted edge into several segmented edges or "steps".
 
