@@ -12,8 +12,9 @@ use of step-expansion without negatively affecting performance.
  * Step: A represenation of incremental traversal of a single edge
 
 Modified BFS from wikipedia (modifications are commented):
+
 <source lang="java" line>
-Breadth-First-Search(G, v):
+Step-Expansion(G, v):
     
     for each node n in G:            
         n.distance = INFINITY        
