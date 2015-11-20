@@ -1,14 +1,16 @@
-# BFSE-SSSP
+# Finding Single-Source Shortest Path using modifed Breadth-First-Search with "Step-Expansion"
 SSSP solution using a new BFS strategy called BFS "expansion"
-or "step-expansion"
+or "step-expansion". Step-expansion can solve SSSP on graphs with varying edge weight. 
+It accomplishes this by simulating extra steps in the traversal process by "expanding"
+a large weighted edge into several segmented edges or "steps".
 
-# Time Complexity
+## Time Complexity
 The algorithm runs in O(V + E*W) where W is the maximum edge weight in the graph.
 
-# Effectiveness
+## Effectiveness
 The algorithm should be effective on any Directed Acyclic Graph. The algorithm is an improvement over naïve BFS SSSP. BFS SSSP will always produce correct output for any DAG if and only if edge weight is constant across all edges. BFS Step-Expansion SSSP corrects this. Therefore, BFSE is effective for any positive weighted DAG. I haven't tested negative edge weights.
 
-# Algorithm
+## Algorithm
 The algorithm introduces two new properties: factor
 and step. In order to use step-expansion, a graph must track 
 step for each edge. The algorithm can be optimized a bit by storing 
