@@ -11,22 +11,23 @@ use of step-expansion without negatively affecting performance.
  * Factor: the minimum edge weight found in the graph
  * Step: A represenation of incremental traversal of a single edge
 
-    For each v in V
-2.    Distance[v] = INF
-3.    Parent[v] = -1
-4. For each e in E
-5.    Step[e] = e.weight
-4. Distance[source] = 0
-5. Queue = {}
-7. Add source to queue
-8. While queue is not empty
-9.    initial = poll front of queue
-10.   for each outgoing edge at initial
-11.       if Step[edge] > factor
-12.           decrease Step[edge]
-13.           re-add initial to back of queue
-14.       else if terminal vertex is not visited
-15.           relax this edge
-16.           visit the terminal vertex
-17.           Parent[terminal] = initial
-18.           remove this edge from the adjacency list
+  For each v in V
+    Distance[v] = INF
+    Parent[v] = -1
+  For each e in E
+    Step[e] = e.weight
+  Distance[source] = 0
+  Queue = {}
+  Add source to queue
+  While queue is not empty
+    initial = poll front of queue
+      for each outgoing edge at initial
+        if Step[edge] > factor
+          decrease Step[edge]
+          re-add initial to back of queue
+        else if terminal vertex is not visited
+          relax this edge
+            Distance[terminal] = Distance[initial] + edge weight
+          visit the terminal vertex
+          Parent[terminal] = initial
+          remove this edge from the adjacency list
