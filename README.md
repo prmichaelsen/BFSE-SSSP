@@ -11,4 +11,26 @@ use of step-expansion without negatively affecting performance.
  * Factor: the minimum edge weight found in the graph
  * Step: A represenation of incremental traversal of a single edge
 
+<source lang="java" line>
+Breadth-First-Search(G, v):
+
+    for each node n in G:            
+        n.distance = INFINITY        
+        n.parent = NIL
+
+    create empty queue Q      
+
+    v.distance = 0
+    Q.enqueue(v)                      
+
+    while Q is not empty:        
+    
+        u = Q.dequeue()
+    
+        for each node n that is adjacent to u:
+            if n.distance == INFINITY:
+                n.distance = u.distance + 1
+                n.parent = u
+                Q.enqueue(n)
+</source>
 
