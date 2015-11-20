@@ -11,6 +11,7 @@ use of step-expansion without negatively affecting performance.
  * Factor: the minimum edge weight found in the graph
  * Step: A represenation of incremental traversal of a single edge
 
+Modified BFS from wikipedia (modifications are commented):
 <source lang="java" line>
 Breadth-First-Search(G, v):
     
@@ -18,11 +19,11 @@ Breadth-First-Search(G, v):
         n.distance = INFINITY        
         n.parent = NIL
 
-    factor = NIL
+    factor = NIL                                        //initialize factor
     
-    for each edge e in G
-        factor = min(factor, e.weight)
-        e.step = e.weight
+    for each edge e in G                                //initialize step for each edge
+        factor = min(factor, e.weight)                  //factor = minimum edge weight in graph
+        e.step = e.weight                               //step for each edge is initialized to edge weight
 
     create empty queue Q      
 
@@ -33,14 +34,14 @@ Breadth-First-Search(G, v):
     
         u = Q.dequeue()
     
-        for each node n that is adjacent to u:
-            if n.step > factor
-                n.step = n.step - 1
-                Q.enqueue(u)
-            if n.distance == INFINITY:
-                n.distance = u.distance + weight(u,v)
+        for each edge e from u to n:                    //process edges
+            if e.step > factor                          //if edge requires stepping
+                e.step = e.step - 1                     //step on edge
+                Q.enqueue(u)                            //enqueue this vertex
+            else if n.distance == INFINITY:             //else if node is not visited
+                n.distance = u.distance + e.weight      //relax using weight of edge
                 n.parent = u
                 Q.enqueue(n)
-                G.remove(n)
+                G.remove(n)                             //do not ever process this edge again
 </source>
 
