@@ -13,10 +13,16 @@ use of step-expansion without negatively affecting performance.
 
 <source lang="java" line>
 Breadth-First-Search(G, v):
-
+    
     for each node n in G:            
         n.distance = INFINITY        
         n.parent = NIL
+
+    factor = NIL
+    
+    for each edge e in G
+        factor = min(factor, e.weight)
+        e.step = e.weight
 
     create empty queue Q      
 
@@ -28,9 +34,13 @@ Breadth-First-Search(G, v):
         u = Q.dequeue()
     
         for each node n that is adjacent to u:
+            if n.step > factor
+                n.step = n.step - 1
+                Q.enqueue(u)
             if n.distance == INFINITY:
-                n.distance = u.distance + 1
+                n.distance = u.distance + weight(u,v)
                 n.parent = u
                 Q.enqueue(n)
+                G.remove(n)
 </source>
 
