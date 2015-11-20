@@ -10,3 +10,5 @@ use of step-expansion without negatively affecting performance.
 
  * Factor: the minimum edge weight found in the graph
  * Step: A represenation of incremental traversal of a single edge
+
+1. For each
