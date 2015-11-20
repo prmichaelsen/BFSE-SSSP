@@ -18,10 +18,11 @@ public class BFSE {
 		this.parent = new ArrayList<Integer>();
 	}
 	
-	// O(1) insertion
+	// O((initial - V) + (terminal - V)) insertion
 	public void addEdge(Edge edge){
 		
 		int initial = edge.getInitial();
+		int terminal = edge.getTerminal();
 		
 		//factor set to minimum edge weight
 		if(factor == 0)
@@ -29,13 +30,21 @@ public class BFSE {
 		else if(factor>edge.getWeight())
 			factor = edge.getWeight();
 		
-		//increase capacity to fit new vertex
+		//increase capacity to fit new initial vertex
 		if(initial + 1>adjList.size()){
 			int amountToAdd = initial + 1 - adjList.size();
 			adjList.addAll(Collections.nCopies(amountToAdd, null));
 			distance.addAll(Collections.nCopies(amountToAdd, INF));
 			parent.addAll(Collections.nCopies(amountToAdd, -1));
 		}
+		
+		//increase capacity to fit new terminal vertex
+		if( terminal + 1 > adjList.size()){
+			int amountToAdd = terminal + 1 - adjList.size();
+			adjList.addAll(Collections.nCopies(amountToAdd, null));
+			distance.addAll(Collections.nCopies(amountToAdd, INF));
+			parent.addAll(Collections.nCopies(amountToAdd, -1));
+		}		
 		
 		//initialize this vertex's edgelist if null
 		if(adjList.get(initial)==null){
@@ -86,8 +95,11 @@ public class BFSE {
 			}
 		}
 		
-		return ssspDistance;
+		System.out.println("Distances: " + ssspDistance);
+		System.out.println("Parents: " + ssspParent);
+		System.out.println();
 		
+		return ssspDistance;
 	}
 	
 

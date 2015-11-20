@@ -21,7 +21,7 @@ public class BFSETest {
 		bfse.addEdge(1, 0, 2);
 		bfse.addEdge(1, 2, 1);
 		
-		System.out.println(bfse.sssp(0));
+		bfse.sssp(0);
 		
 	}
 	
@@ -34,7 +34,18 @@ public class BFSETest {
 		bfse.addEdge(2, 0, 2);
 		bfse.addEdge(1, 2, 1);
 
-		System.out.println(bfse.sssp(0));
+		bfse.sssp(0);
+		
+	}
+	
+	@Test
+	public void test4(){
+		
+		BFSE bfse = new BFSE();
+		
+		bfse.addEdge(4, 0, 1);
+
+		bfse.sssp(0);
 		
 	}
 
