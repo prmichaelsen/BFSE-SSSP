@@ -48,5 +48,31 @@ public class BFSETest {
 		bfse.sssp(0);
 		
 	}
+	
+	@Test
+	public void test5(){
+		
+		BFSE bfse = new BFSE();
+		
+		bfse.addEdge(4, 0, 1);
+		bfse.addEdge(5, 1, 2);
+
+		bfse.sssp(0);
+		
+	}
+	
+	@Test
+	public void test6(){
+		
+		BFSE bfse = new BFSE();
+		
+		bfse.addEdge(4, 0, 1);
+		bfse.addEdge(5, 1, 2);
+		bfse.addEdge(3, 0, 3);
+		bfse.addEdge(3, 3, 2);
+
+		bfse.sssp(0);
+		
+	}
 
 }

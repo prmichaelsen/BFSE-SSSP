@@ -1,13 +1,22 @@
 
 public class Edge implements Comparable<Edge>{
 
-	private int weight, initial, terminal;
+	private int weight, initial, terminal, step;
 
 	public Edge(int weight, int initial, int terminal) {
 		super();
 		this.weight = weight;
 		this.initial = initial;
 		this.terminal = terminal;
+		this.step = weight;
+	}
+
+	public int getStep() {
+		return step;
+	}
+
+	public void setStep(int step) {
+		this.step = step;
 	}
 
 	public int getWeight() {
