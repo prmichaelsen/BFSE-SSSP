@@ -18,14 +18,15 @@ public class BFSE {
 		this.parent = new ArrayList<Integer>();
 	}
 	
-	
 	// O(1) insertion
 	public void addEdge(Edge edge){
 		
 		int initial = edge.getInitial();
 		
 		//factor set to minimum edge weight
-		if(factor>edge.getWeight())
+		if(factor == 0)
+			factor=edge.getWeight();
+		else if(factor>edge.getWeight())
 			factor = edge.getWeight();
 		
 		//increase capacity to fit new vertex
@@ -48,5 +49,52 @@ public class BFSE {
 	public void addEdge(int weight, int initial, int terminal){
 		addEdge(new Edge( weight,  initial,  terminal));
 	}
+
+	public ArrayList<Integer> sssp(int source){
+		
+		ArrayList<Integer> ssspPath = new ArrayList<Integer>();
+		ArrayList<Integer> ssspParent = new ArrayList<Integer>(parent);
+		ArrayList<Integer> ssspDistance = new ArrayList<Integer>(distance);
+		ArrayList<Integer> ssspVisited = new ArrayList<Integer>(parent);
+		ArrayList<ArrayList<Edge>> ssspAdjList = new ArrayList<ArrayList<Edge>>(adjList);
+		Queue<Integer> queue = new LinkedList<Integer>();
+		
+		ssspDistance.set(source, 0);
+		queue.add(source);
+		
+		while(!queue.isEmpty()){
+			int initial = queue.poll();
+			Iterator<Edge> it;
+			if(ssspAdjList.get(initial)!=null){
+				it = ssspAdjList.get(initial).iterator();
+				while(it.hasNext()){
+					Edge edge = it.next();
+					int weight = edge.getWeight();
+					int terminal = edge.getTerminal();
+					if(weight>factor){
+						edge.setWeight(weight-1);
+						queue.add(initial);
+					}
+					else if(ssspDistance.get(terminal) == INF){
+						//relax this edge
+						ssspDistance.set(terminal, ssspDistance.get(initial)+weight);
+						ssspParent.set(terminal,initial);
+						queue.add(terminal);
+						it.remove();
+					}
+				}
+			}
+		}
+		
+		return ssspDistance;
+		
+	}
+	
+
+	@Override
+	public String toString() {
+		return "BFSE [adjList=" + adjList + "]";
+	}
+	
 	
 }
