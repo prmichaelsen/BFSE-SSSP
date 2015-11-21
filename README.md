@@ -88,3 +88,5 @@ step(Edge e):
 
 
 New idea to combat dependency on W. Instead of adding stepped edges to the queue, just add them to an array of size maxWeight and a linked list of size total stepped edges. Track the level of the BFS. At each level, get the edge from the array[level] and traverse it. This means time complexity is O(V+E) but space complexity becomes O(V+E+W).
+
+Store the lowest edge weight that is greater than minimum edge weight. If level > this weight then step on the node, and set the next lowest edge weight as the lowest edge weight (looks an awful lot like priqueue)
