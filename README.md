@@ -39,17 +39,17 @@ Step-Expansion(G, v):
         n.distance = INFINITY        
         n.parent = NIL
 
-    factor = NIL                                        //initialize factor
-    absoluteMinimum = 0                                 //initialize minimum possible weight
+    factor = NIL                                    //initialize factor
+    absoluteMinimum = 0                             //initialize minimum possible weight
     
-    for each edge e in G                                //initialize step for each edge
-        factor = min(factor, e.weight)                  //factor = minimum edge weight in graph
-        e.step = e.weight                               //step for each edge is initialized to edge weight
-        if(e.weight<0)                                  //if the edge is negative then it contributes
-            absoluteMinimum += e.weight                 //to the absolute minimum possible weight of graph
+    for each edge e in G                            //initialize step for each edge
+        factor = min(factor, e.weight)              //factor = minimum edge weight in graph
+        e.step = e.weight                           //step for each edge is initialized to edge weight
+        if(e.weight<0)                              //if the edge is negative then it contributes
+            absoluteMinimum += e.weight             //to the absolute minimum possible weight of graph
 
-    create empty queue Q                                //this queue will hold vertices and edges
-                                                        //as opposed to just vertices
+    create empty queue Q                            //this queue will hold vertices and edges
+                                                    //as opposed to just vertices
 
     v.distance = 0
     Q.enqueue(v)                      
@@ -58,11 +58,11 @@ Step-Expansion(G, v):
     
         u = Q.dequeue()
     
-        if(u is vertex)                                 //if this is avertex 
-            for each edge e from u to n:                //for each outgoing edge
-                step(e)                                 //run step-subroutine 
-        if(u is edge)                                   //if this is an edge
-            step(u)                                     //run step-subroutine on this edge
+        if(u is vertex)                             //if this is avertex 
+            for each edge e from u to n:            //for each outgoing edge
+                step(e)                             //run step-subroutine 
+        if(u is edge)                               //if this is an edge
+            step(u)                                 //run step-subroutine on this edge
             
 </source>
 
