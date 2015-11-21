@@ -4,10 +4,12 @@ import java.io.*;
 public class BFSE {
 	
 	private static final Integer INF = 0x0F_FF_FF;
+	private static final Integer NEG_INF = - 0x0F_FF_FF;
 	private ArrayList<ArrayList<Edge>> adjList;
 	private ArrayList<Integer> distance;
 	private ArrayList<Integer> parent;
 	private int factor;
+	private int absoluteMinimum;
 
 	// O(1) initialization
 	public BFSE() {
@@ -16,6 +18,9 @@ public class BFSE {
 		this.adjList = new ArrayList<ArrayList<Edge>>();
 		this.distance = new ArrayList<Integer>();
 		this.parent = new ArrayList<Integer>();
+		
+		factor = 0;
+		absoluteMinimum = 0;
 	}
 	
 	// O((initial - V) + (terminal - V)) insertion
@@ -23,12 +28,16 @@ public class BFSE {
 		
 		int initial = edge.getInitial();
 		int terminal = edge.getTerminal();
+		int weight = edge.getWeight();
 		
 		//factor set to minimum edge weight
 		if(factor == 0)
-			factor=edge.getWeight();
-		else if(factor>edge.getWeight())
-			factor = edge.getWeight();
+			factor=weight;
+		else if(factor>weight)
+			factor = weight;
+		
+		if(weight<0)
+			absoluteMinimum+=weight;
 		
 		//increase capacity to fit new initial vertex
 		if(initial + 1>adjList.size()){
@@ -110,8 +119,14 @@ public class BFSE {
 						//edge has been visited
 						else if(ssspDistance.get(terminal) > ssspDistance.get(initial) + weight){
 						
-							//relax this edge
-							ssspDistance.set(terminal, ssspDistance.get(initial)+weight);
+							//check for negative cycle
+							if(ssspDistance.get(terminal)<absoluteMinimum){
+								ssspDistance.set(terminal, NEG_INF);
+							}else{
+								//relax this edge
+								ssspDistance.set(terminal, ssspDistance.get(initial)+weight);
+							}
+							
 							ssspParent.set(terminal,initial);
 							queue.add(terminal);
 						}
@@ -139,10 +154,17 @@ public class BFSE {
 				//edge has been visited
 				else if(ssspDistance.get(terminal) > ssspDistance.get(initial) + weight){
 				
-					//relax this edge
-					ssspDistance.set(terminal, ssspDistance.get(initial)+weight);
+					//check for negative cycle
+					if(ssspDistance.get(terminal)<absoluteMinimum){
+						ssspDistance.set(terminal, NEG_INF);
+					}else{
+						//relax this edge
+						ssspDistance.set(terminal, ssspDistance.get(initial)+weight);
+					}
+					
 					ssspParent.set(terminal,initial);
 					queue.add(terminal);
+
 				}
 			}
 		}
