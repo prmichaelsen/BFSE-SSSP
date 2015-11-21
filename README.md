@@ -6,7 +6,12 @@ a large weighted edge into several segmented edges or "steps".
 Initially, the step-expansion only worked on arbirtrarily weighted DAG. This stage of development can be found under the "DAG" branch.
 
 ## Time Complexity
-The algorithm runs in O(V + E*W) where W is the maximum edge weight in the graph. More precisely, the algorithm runs in O(V + E + W) time where W is the summation of all edge weights minus the total number of edges times the minimum edge weight. I use E + W because each edge e will be processed at least once and w as many times where w is the the difference between e.weight and the  minimum edge weight. Therefore complexity is the sum of the number of vertices, the number of edges, and the number of additional times all edges have to be processed.
+The algorithm runs in O(V + E*W) where W is the maximum edge weight in the graph. More precisely, the algorithm runs in O(V + E + W) time where W is the summation of all edge weights minus the total number of edges times the minimum edge weight. I use E + W because each edge e will be processed at least once and w as many times where w is the the difference between e.weight and the  minimum edge weight. Therefore complexity is the sum of the number of vertices, the number of edges, and the number of additional times all edges have to be processed. 
+
+This algorithm depends heavily on W. Therefore I make the following recommendations:
+ * For arbitrarily weighted graphs: if W > VE then the use of Bellman-Ford's algorithm is preferred. 
+ * For positive weighted graphs: if W > (V+E)logV then Dijkstra's is preferred.
+ * For all graphs: if W < min(V,E) then step-expansion is preferred.
 
 ## Effectiveness
 The algorithm should be effective on any directed graph with arbitrary weights. The algorithm is an improvement over naïve BFS SSSP. BFS SSSP will always produce correct output for any DAG if and only if edge weight is constant across all edges. BFS Step-Expansion SSSP corrects this. Therefore, BFSE is effective for any positive weighted DAG. Further modifications to BFSE allow for it to be effective on any directed graph with arbitrary weights with or without cycles.
