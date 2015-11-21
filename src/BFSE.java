@@ -75,7 +75,7 @@ public class BFSE {
 		ArrayList<Integer> ssspParent = new ArrayList<Integer>(parent);
 		ArrayList<Integer> ssspDistance = new ArrayList<Integer>(distance);
 		ArrayList<ArrayList<Edge>> ssspAdjList = new ArrayList<ArrayList<Edge>>(adjList);
-		Hashtable<Integer, Edge> ssspEdges  = new Hashtable<Integer, Edge>();
+		Hashtable<Integer, ArrayList<Edge>> ssspEdges  = new Hashtable<Integer, ArrayList<Edge>>();
 		Queue<Integer> queue = new LinkedList<Integer>();
 		int level = 0;
 		
@@ -93,10 +93,14 @@ public class BFSE {
 			
 			while(ssspEdges.containsKey(depth)){
 				
-				Edge edge = ssspEdges.remove(depth);
-//				System.out.println((edge.getWeight()));
-				edge.setStep(factor);
-				step(edge, queue, ssspParent, ssspDistance, ssspEdges,level);
+				ArrayList<Edge> edges = ssspEdges.remove(depth);
+				Iterator<Edge> it = edges.iterator();
+				while(it.hasNext()){
+					Edge edge = it.next();
+					edge.setStep(factor);
+					step(edge, queue, ssspParent, ssspDistance, ssspEdges,level);
+				}
+				
 			}
 	
 				Iterator<Edge> it;
@@ -119,10 +123,13 @@ public class BFSE {
 		Iterator<Integer> it = ssspEdges.keySet().iterator();
 		while(it.hasNext()){
 			int weight = it.next();
-			Edge edge = ssspEdges.get(weight);
-			it.remove();
-			edge.setStep(factor);
-			step(edge, queue, ssspParent, ssspDistance, ssspEdges, edge.getWeight());
+			ArrayList<Edge> edges = ssspEdges.get(weight);
+			Iterator<Edge> it2 = edges.iterator();
+			while(it2.hasNext()){
+				Edge edge = it2.next();
+				edge.setStep(factor);
+				step(edge, queue, ssspParent, ssspDistance, ssspEdges,level);
+			}
 		}
 		
 		System.out.println("Distances: " + ssspDistance);
@@ -135,7 +142,7 @@ public class BFSE {
 	public void step(Edge edge, Queue<Integer> queue, 
 			ArrayList<Integer> ssspParent, 
 			ArrayList<Integer> ssspDistance,
-			Hashtable<Integer,Edge> ssspEdges,
+			Hashtable<Integer,ArrayList<Edge>> ssspEdges,
 			int depth){
 	
 		int weight = edge.getWeight();
@@ -147,7 +154,14 @@ public class BFSE {
 		//traversable in one step
 		if(step>factor){
 			
-			ssspEdges.put(weight, edge);
+			ArrayList<Edge> edges = ssspEdges.get(weight);
+			if(edges!=null)
+				edges.add(edge);
+			else{
+				edges = new ArrayList<Edge>();
+				edges.add(edge);
+			}
+			ssspEdges.put(weight, edges);
 	
 		}
 		//check to see if the
