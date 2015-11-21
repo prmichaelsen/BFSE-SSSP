@@ -75,7 +75,9 @@ public class BFSE {
 		ArrayList<Integer> ssspParent = new ArrayList<Integer>(parent);
 		ArrayList<Integer> ssspDistance = new ArrayList<Integer>(distance);
 		ArrayList<ArrayList<Edge>> ssspAdjList = new ArrayList<ArrayList<Edge>>(adjList);
-		Queue<Object> queue = new LinkedList<Object>();
+		Hashtable<Integer, Edge> ssspEdges  = new Hashtable<Integer, Edge>();
+		Queue<Integer> queue = new LinkedList<Integer>();
+		int level = -1;
 		
 		//set source values
 		ssspDistance.set(source, 0);
@@ -83,14 +85,14 @@ public class BFSE {
 		
 		while(!queue.isEmpty()){
 			
-			Object item = queue.poll();
-			int initial;
-			Edge expanded;
-			
-			// if this is a vertex
-			// explore the neighbors
-			if(item instanceof Integer){
-				initial = (Integer) item;
+			level++;
+			while(ssspEdges.containsKey(level)){
+				Edge edge = ssspEdges.remove(level);
+				edge.setStep(factor);
+				step(edge, queue, ssspParent, ssspDistance, ssspEdges);
+			}
+			int initial = queue.poll();
+	
 				Iterator<Edge> it;
 				
 				//if this vertex has outgoing edges
@@ -103,17 +105,18 @@ public class BFSE {
 						
 						//get the edge
 						Edge edge = it.next();
-						step(edge, queue, ssspParent, ssspDistance);
+						step(edge, queue, ssspParent, ssspDistance, ssspEdges);
 					}
 				}
-			
-			//if this is an edge
-			//increment the edge's step
-			}else if(item instanceof Edge){
-				
-				expanded = (Edge) item;
-				step(expanded, queue, ssspParent, ssspDistance);
-			}
+		}
+		
+		Iterator<Integer> it = ssspEdges.keySet().iterator();
+		while(it.hasNext()){
+			int weight = it.next();
+			Edge edge = ssspEdges.get(weight);
+			it.remove();
+			edge.setStep(factor);
+			step(edge, queue, ssspParent, ssspDistance, ssspEdges);
 		}
 		
 		System.out.println("Distances: " + ssspDistance);
@@ -123,9 +126,10 @@ public class BFSE {
 		return ssspDistance;
 	}
 	
-	public void step(Edge edge, Queue<Object> queue, 
+	public void step(Edge edge, Queue<Integer> queue, 
 			ArrayList<Integer> ssspParent, 
-			ArrayList<Integer> ssspDistance){
+			ArrayList<Integer> ssspDistance,
+			Hashtable<Integer,Edge> ssspEdges){
 	
 		int weight = edge.getWeight();
 		int initial = edge.getInitial();
@@ -133,16 +137,11 @@ public class BFSE {
 		int step = edge.getStep();
 	
 		//check to see if this 
-		//edge is fully traversed
+		//traversable in one step
 		if(step>factor){
 			
-			//if the edge is not 
-			//traversed, then move
-			//up edge one step
-			//and add the edge 
-			//to the queue
-			edge.setStep(step-1);
-			queue.add(edge);
+			ssspEdges.put(weight, edge);
+	
 		}
 		//check to see if the
 		//terminal vertex at this

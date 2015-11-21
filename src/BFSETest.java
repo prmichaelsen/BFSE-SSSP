@@ -78,6 +78,7 @@ public class BFSETest {
 	//negative edge weights
 	@Test
 	public void test007(){
+		System.out.println("test007 negative edge weights");
 		
 		BFSE bfse = new BFSE();
 		
@@ -123,6 +124,7 @@ public class BFSETest {
 	//exp output for
 	//distance: [-inf,-inf,-inf]
 	public void test010(){
+		System.out.println("test010 negative cycle");
 		
 		BFSE bfse = new BFSE();
 		
@@ -137,6 +139,7 @@ public class BFSETest {
 	//exp output for
 	//distance: [-inf,-inf,-inf, 0, 1]
 	public void test011(){
+		System.out.println("test011");
 		
 		BFSE bfse = new BFSE();
 		
@@ -153,6 +156,7 @@ public class BFSETest {
 	//exp output for
 	//distance: [-inf,-inf, 0]
 	public void test012(){
+		System.out.println("test012");
 		
 		BFSE bfse = new BFSE();
 	
@@ -165,6 +169,7 @@ public class BFSETest {
 	
 	@Test //massive weight range
 	public void test013(){
+		System.out.println("test013 massive weight range");
 		
 		BFSE bfse = new BFSE();
 	
@@ -198,6 +203,7 @@ public class BFSETest {
 	
 	@Test //large weight range
 	public void test016(){
+		System.out.println("test016 many equal large edges");
 		
 		BFSE bfse = new BFSE();
 	
@@ -213,6 +219,28 @@ public class BFSETest {
 		bfse.addEdge(10000, 0, 10);
 		bfse.addEdge(10000, 0, 11);
 		bfse.addEdge(10000, 0, 12);
+		
+		bfse.sssp(0);
+	}
+	
+	@Test //large weight range
+	public void test017(){
+		System.out.println("test017 many unique large edges");
+		
+		BFSE bfse = new BFSE();
+	
+		bfse.addEdge(1, 0, 1);
+		bfse.addEdge(10000, 0, 2);
+		bfse.addEdge(10001, 0, 3);
+		bfse.addEdge(10002, 0, 4);
+		bfse.addEdge(10003, 0, 5);
+		bfse.addEdge(10004, 0, 6);
+		bfse.addEdge(10005, 0, 7);
+		bfse.addEdge(10006, 0, 8);
+		bfse.addEdge(10007, 0, 9);
+		bfse.addEdge(10008, 0, 10);
+		bfse.addEdge(10009, 0, 11);
+		bfse.addEdge(10010, 0, 12);
 		
 		bfse.sssp(0);
 	}
