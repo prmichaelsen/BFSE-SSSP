@@ -1,15 +1,15 @@
 # Introduction to Step-Expansion
-This is an explanation on finding the single-source shortest path using a modifed breadth-first-search algorithm called  "step-expansion". Step-expansion can solve SSSP on graphs with varying edge weight. 
+This is an explanation on finding the single-source shortest path using a modifed breadth-first-search algorithm called  "step-expansion". Step-expansion can solve SSSP on cyclic graphs with arbitrary edge weight. 
 It accomplishes this by simulating extra steps in the traversal process by "expanding"
 a large weighted edge into several segmented edges or "steps".
 
 ## Time Complexity
-The algorithm runs in O(V + E*W) where W is the maximum edge weight in the graph.
+The algorithm runs in O(V + E*W) where W is the maximum edge weight in the graph. MOre precisely, the algorithm runs in O(V + E + W) time where W is the summation of all edge weights minus the total number of edges times the minimum edge weight. I use E + W because each edge e will be processed at least once and w as many times where w is the the difference between e.weight and the  minimum edge weight. Therefore complexity is the number of edges plus the number of additional times all edges had to be processed.
 
 ## Effectiveness
-The algorithm should be effective on any Directed Acyclic Graph. The algorithm is an improvement over naïve BFS SSSP. BFS SSSP will always produce correct output for any DAG if and only if edge weight is constant across all edges. BFS Step-Expansion SSSP corrects this. Therefore, BFSE is effective for any positive weighted DAG. I haven't tested negative edge weights.
+The algorithm should be effective on any Directed Acyclic Graph. The algorithm is an improvement over naïve BFS SSSP. BFS SSSP will always produce correct output for any DAG if and only if edge weight is constant across all edges. BFS Step-Expansion SSSP corrects this. Therefore, BFSE is effective for any arbitrarily weighted graph with or without cycles.
 
-Formal proof and more inclusive testing is required to substantiate my claim that BFSE can produce correct output for any positive weighted DAG. So far, in my limited testing, I have not discovered a counter-example.
+Formal proof and more inclusive testing is required to substantiate my claim that BFSE can produce correct output for any arbitrarily weighted graph with or without cycles. So far, in my limited testing, I have not discovered a counter-example.
 
 ## Algorithm
 The algorithm introduces two new properties: factor
