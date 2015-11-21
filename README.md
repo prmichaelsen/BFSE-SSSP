@@ -15,8 +15,8 @@ Formal proof and more inclusive testing is required to substantiate this claim. 
 
 ## Algorithm
 The algorithm introduces three new properties: factor, step, and ideal weight.
-In order to use step-expansion, a graph must track 
-step for each edge along with the factor and ideal weight for itself. 
+In order to use step-expansion, a graph must track factor and ideal weight.
+Additionally, each edge must track step.
 The algorithm can be optimized a bit by storing 
 these values instead of finding them each time BFSE is called.
 
