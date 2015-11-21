@@ -139,7 +139,7 @@ public class BFSETest {
 	//exp output for
 	//distance: [-inf,-inf,-inf, 0, 1]
 	public void test011(){
-		System.out.println("test011");
+		System.out.println("test011 negative cycle");
 		
 		BFSE bfse = new BFSE();
 		
@@ -156,7 +156,7 @@ public class BFSETest {
 	//exp output for
 	//distance: [-inf,-inf, 0]
 	public void test012(){
-		System.out.println("test012");
+		System.out.println("test012 negative cycle");
 		
 		BFSE bfse = new BFSE();
 	
@@ -241,6 +241,51 @@ public class BFSETest {
 		bfse.addEdge(10008, 0, 10);
 		bfse.addEdge(10009, 0, 11);
 		bfse.addEdge(10010, 0, 12);
+		
+		bfse.sssp(0);
+	}
+	
+	@Test //depth test
+	public void test018(){
+		System.out.println("test018 depth test");
+		
+		BFSE bfse = new BFSE();
+	
+		bfse.addEdge(1, 0, 1);
+		bfse.addEdge(1, 0, 2);
+		bfse.addEdge(1, 2, 3);
+		bfse.addEdge(1, 3, 4);
+		bfse.addEdge(1, 5, 5);
+		bfse.addEdge(1, 1, 6);
+		bfse.addEdge(1, 6, 7);
+		bfse.addEdge(1, 7, 8);
+		bfse.addEdge(1, 3, 9);
+		bfse.addEdge(1, 9, 10);
+		bfse.addEdge(1, 10, 11);
+		bfse.addEdge(1, 10, 12);
+		
+		bfse.sssp(0);
+	}
+	
+	@Test //depth test
+	public void test019(){
+		System.out.println("test019 depth test with weight");
+		
+		BFSE bfse = new BFSE();
+	
+		bfse.addEdge(1, 0, 1);
+		bfse.addEdge(1, 0, 2);
+		bfse.addEdge(1, 2, 3);
+		bfse.addEdge(1, 3, 4);
+		bfse.addEdge(1, 5, 5);
+		bfse.addEdge(1, 1, 6);
+		bfse.addEdge(1, 6, 7);
+		bfse.addEdge(1, 7, 8);
+		bfse.addEdge(1, 3, 9);
+		bfse.addEdge(1, 9, 10);
+		bfse.addEdge(1, 10, 11);
+		bfse.addEdge(1, 10, 12);
+		bfse.addEdge(2, 0, 4);
 		
 		bfse.sssp(0);
 	}

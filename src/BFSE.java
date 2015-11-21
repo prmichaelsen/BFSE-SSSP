@@ -77,21 +77,27 @@ public class BFSE {
 		ArrayList<ArrayList<Edge>> ssspAdjList = new ArrayList<ArrayList<Edge>>(adjList);
 		Hashtable<Integer, Edge> ssspEdges  = new Hashtable<Integer, Edge>();
 		Queue<Integer> queue = new LinkedList<Integer>();
-		int level = -1;
+		int level = 0;
 		
 		//set source values
 		ssspDistance.set(source, 0);
 		queue.add(source);
+		queue.add(0);
 		
 		while(!queue.isEmpty()){
 			
-			level++;
-			while(ssspEdges.containsKey(level)){
-				Edge edge = ssspEdges.remove(level);
-				edge.setStep(factor);
-				step(edge, queue, ssspParent, ssspDistance, ssspEdges);
-			}
 			int initial = queue.poll();
+			int depth = queue.poll();
+			
+			System.out.println(depth);
+			
+			while(ssspEdges.containsKey(depth)){
+				
+				Edge edge = ssspEdges.remove(depth);
+//				System.out.println((edge.getWeight()));
+				edge.setStep(factor);
+				step(edge, queue, ssspParent, ssspDistance, ssspEdges,level);
+			}
 	
 				Iterator<Edge> it;
 				
@@ -105,7 +111,7 @@ public class BFSE {
 						
 						//get the edge
 						Edge edge = it.next();
-						step(edge, queue, ssspParent, ssspDistance, ssspEdges);
+						step(edge, queue, ssspParent, ssspDistance, ssspEdges, depth);
 					}
 				}
 		}
@@ -116,7 +122,7 @@ public class BFSE {
 			Edge edge = ssspEdges.get(weight);
 			it.remove();
 			edge.setStep(factor);
-			step(edge, queue, ssspParent, ssspDistance, ssspEdges);
+			step(edge, queue, ssspParent, ssspDistance, ssspEdges, edge.getWeight());
 		}
 		
 		System.out.println("Distances: " + ssspDistance);
@@ -129,7 +135,8 @@ public class BFSE {
 	public void step(Edge edge, Queue<Integer> queue, 
 			ArrayList<Integer> ssspParent, 
 			ArrayList<Integer> ssspDistance,
-			Hashtable<Integer,Edge> ssspEdges){
+			Hashtable<Integer,Edge> ssspEdges,
+			int depth){
 	
 		int weight = edge.getWeight();
 		int initial = edge.getInitial();
@@ -161,6 +168,7 @@ public class BFSE {
 			//mark the terminal vertex
 			//for exploration
 			queue.add(terminal);
+			queue.add(depth+1);
 		}
 	}
 

@@ -1,7 +1,7 @@
 
 public class Edge implements Comparable<Edge>{
 
-	private int weight, initial, terminal, step;
+	private int weight, initial, terminal, step, depth;
 
 	public Edge(int weight, int initial, int terminal) {
 		super();
@@ -9,6 +9,7 @@ public class Edge implements Comparable<Edge>{
 		this.initial = initial;
 		this.terminal = terminal;
 		this.step = weight;
+		this.depth = 0;
 	}
 
 	public int getStep() {
@@ -57,6 +58,14 @@ public class Edge implements Comparable<Edge>{
 	@Override
 	public String toString() {
 		return "Edge [weight=" + weight + ", initial=" + initial + ", terminal=" + terminal + "]";
+	}
+
+	public int getDepth() {
+		return depth;
+	}
+
+	public void setDepth(int depth) {
+		this.depth = depth;
 	}
 	
 	
