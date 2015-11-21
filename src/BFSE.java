@@ -104,7 +104,7 @@ public class BFSE {
 					//check to see if the
 					//terminal vertex at this
 					//edge has been visited
-					else if(ssspDistance.get(terminal) == INF){
+					else if(ssspDistance.get(terminal) > ssspDistance.get(initial) + weight){
 					
 						//relax this edge
 						ssspDistance.set(terminal, ssspDistance.get(initial)+weight);
