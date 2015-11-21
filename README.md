@@ -4,7 +4,7 @@ It accomplishes this by simulating extra steps in the traversal process by "expa
 a large weighted edge into several segmented edges or "steps".
 
 ## Time Complexity
-The algorithm runs in O(V + E*W) where W is the maximum edge weight in the graph. MOre precisely, the algorithm runs in O(V + E + W) time where W is the summation of all edge weights minus the total number of edges times the minimum edge weight. I use E + W because each edge e will be processed at least once and w as many times where w is the the difference between e.weight and the  minimum edge weight. Therefore complexity is the number of edges plus the number of additional times all edges had to be processed.
+The algorithm runs in O(V + E*W) where W is the maximum edge weight in the graph. More precisely, the algorithm runs in O(V + E + W) time where W is the summation of all edge weights minus the total number of edges times the minimum edge weight. I use E + W because each edge e will be processed at least once and w as many times where w is the the difference between e.weight and the  minimum edge weight. Therefore complexity is the number of edges plus the number of additional times all edges had to be processed.
 
 ## Effectiveness
 The algorithm should be effective on any Directed Acyclic Graph. The algorithm is an improvement over naïve BFS SSSP. BFS SSSP will always produce correct output for any DAG if and only if edge weight is constant across all edges. BFS Step-Expansion SSSP corrects this. Therefore, BFSE is effective for any arbitrarily weighted graph with or without cycles.
