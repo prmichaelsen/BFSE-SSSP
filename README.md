@@ -30,10 +30,13 @@ Step-Expansion(G, v):
         n.parent = NIL
 
     factor = NIL                                        //initialize factor
+    absoluteMinimum = 0                                 //initialize minimum possible weight
     
     for each edge e in G                                //initialize step for each edge
         factor = min(factor, e.weight)                  //factor = minimum edge weight in graph
         e.step = e.weight                               //step for each edge is initialized to edge weight
+        if(e.weight<0)                                  //if the edge is negative
+            absoluteMinimum += e.weight                 //contribute to absolute minimum possible weight of graph
 
     create empty queue Q      
 
@@ -44,14 +47,26 @@ Step-Expansion(G, v):
     
         u = Q.dequeue()
     
-        for each edge e from u to n:                    //process edges
-            if e.step > factor                          //if edge requires stepping
-                e.step = e.step - 1                     //step on edge
-                Q.enqueue(u)                            //enqueue this vertex
-            else if n.distance == INFINITY:             //else if node is not visited
-                n.distance = u.distance + e.weight      //relax using weight of edge
-                n.parent = u
-                Q.enqueue(n)
-                G.remove(n)                             //do not ever process this edge again
+        if(u is vertex)
+            for each edge e from u to n:
+                step(edge)
+        if(u is edge)
+            step(u)
+            
+</source>
+
+<source lang="java" line>
+step(Edge e):
+
+    if e.step > factor                              //if edge requires stepping
+        e.step = e.step - 1                         //step on edge
+        Q.enqueue(e)                                //enqueue this edge
+    else if n.distance > u.distance + e.weight:     //else if node is not visited
+        if n.distance < absoluteMinimum             //detect negative cycle
+            n.distance = -INF                       //set distance as -INF
+        else
+            n.distance = u.distance + e.weight      //relax using weight of edge
+        n.parent = u
+        Q.enqueue(n)
 </source>
 
