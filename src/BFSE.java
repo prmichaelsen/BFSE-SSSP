@@ -66,7 +66,7 @@ public class BFSE {
 		ArrayList<Integer> ssspParent = new ArrayList<Integer>(parent);
 		ArrayList<Integer> ssspDistance = new ArrayList<Integer>(distance);
 		ArrayList<ArrayList<Edge>> ssspAdjList = new ArrayList<ArrayList<Edge>>(adjList);
-		Queue<Integer> queue = new LinkedList<Integer>();
+		Queue<Object> queue = new LinkedList<Object>();
 		
 		//set source values
 		ssspDistance.set(source, 0);
@@ -74,48 +74,75 @@ public class BFSE {
 		
 		while(!queue.isEmpty()){
 			
-			int initial = queue.poll();
-			Iterator<Edge> it;
+			Object item = queue.poll();
+			int initial;
+			Edge expanded;
+			if(item instanceof Integer){
+				initial = (Integer) item;
+				Iterator<Edge> it;
+				
+				//if this vertex has outgoing edges
+				if(ssspAdjList.get(initial)!=null){
+					
+					it = ssspAdjList.get(initial).iterator();
+					
+					//for each edge from this vertex
+					while(it.hasNext()){
+						//get the edge
+						Edge edge = it.next();
+						int weight = edge.getWeight();
+						int step = edge.getStep();
+						int terminal = edge.getTerminal();
+					
+						//check to see if this 
+						//edge is fully traversed
+						if(step>factor){
+							
+							//if the edge is not 
+							//traversed, then move
+							//up edge one step
+							edge.setStep(step-1);
+							queue.add(edge);
+						
+						}
+						//check to see if the
+						//terminal vertex at this
+						//edge has been visited
+						else if(ssspDistance.get(terminal) > ssspDistance.get(initial) + weight){
+						
+							//relax this edge
+							ssspDistance.set(terminal, ssspDistance.get(initial)+weight);
+							ssspParent.set(terminal,initial);
+							queue.add(terminal);
+						}
+					}
+				}
+			}else if(item instanceof Edge){
+				expanded = (Edge) item;
+				initial = expanded.getInitial();
+				int weight = expanded.getWeight();
+				int step = expanded.getStep();
+				int terminal = expanded.getTerminal();
 			
-			//if this vertex has outgoing edges
-			if(ssspAdjList.get(initial)!=null){
-				
-				it = ssspAdjList.get(initial).iterator();
-				
-				//for each edge from this vertex
-				while(it.hasNext()){
-					//get the edge
-					Edge edge = it.next();
-					int weight = edge.getWeight();
-					int step = edge.getStep();
-					int terminal = edge.getTerminal();
-				
-					//check to see if this 
-					//edge is fully traversed
-					if(step>factor){
-						
-						//if the edge is not 
-						//traversed, then move
-						//up edge one step
-						edge.setStep(step-1);
-						queue.add(initial);
+				//check to see if this 
+				//edge is fully traversed
+				if(step>factor){
 					
-					}
-					//check to see if the
-					//terminal vertex at this
-					//edge has been visited
-					else if(ssspDistance.get(terminal) > ssspDistance.get(initial) + weight){
-					
-						//relax this edge
-						ssspDistance.set(terminal, ssspDistance.get(initial)+weight);
-						ssspParent.set(terminal,initial);
-						queue.add(terminal);
-						
-						//important: do not revisit this edge
-						//when stepping through the edges
-						//of old vertices
-						it.remove();
-					}
+					//if the edge is not 
+					//traversed, then move
+					//up edge one step
+					expanded.setStep(step-1);
+					queue.add(expanded);
+				
+				}//check to see if the
+				//terminal vertex at this
+				//edge has been visited
+				else if(ssspDistance.get(terminal) > ssspDistance.get(initial) + weight){
+				
+					//relax this edge
+					ssspDistance.set(terminal, ssspDistance.get(initial)+weight);
+					ssspParent.set(terminal,initial);
+					queue.add(terminal);
 				}
 			}
 		}
