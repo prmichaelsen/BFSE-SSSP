@@ -45,8 +45,8 @@ Step-Expansion(G, v):
     for each edge e in G                                //initialize step for each edge
         factor = min(factor, e.weight)                  //factor = minimum edge weight in graph
         e.step = e.weight                               //step for each edge is initialized to edge weight
-        if(e.weight<0)                                  //if the edge is negative
-            absoluteMinimum += e.weight                 //contribute to absolute minimum possible weight of graph
+        if(e.weight<0)                                  //if the edge is negative then it contributes
+            absoluteMinimum += e.weight                 //to the absolute minimum possible weight of graph
 
     create empty queue Q                                //this queue will hold vertices and edges
                                                         //as opposed to just vertices
