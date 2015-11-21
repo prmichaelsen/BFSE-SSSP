@@ -12,13 +12,20 @@ The algorithm should be effective on any Directed Acyclic Graph. The algorithm i
 Formal proof and more inclusive testing is required to substantiate my claim that BFSE can produce correct output for any arbitrarily weighted graph with or without cycles. So far, in my limited testing, I have not discovered a counter-example.
 
 ## Algorithm
-The algorithm introduces two new properties: factor
-and step. In order to use step-expansion, a graph must track 
-step for each edge. The algorithm can be optimized a bit by storing 
+The algorithm introduces three new properties: factor, step, and ideal weight.
+In order to use step-expansion, a graph must track 
+step for each edge along with the factor and ideal weight for itself. 
+The algorithm can be optimized a bit by storing 
 these values instead of finding them each time BFSE is called.
 
  * Factor: the minimum edge weight found in the graph
- * Step: A represenation of incremental traversal of a single edge
+ * Step: a represenation of incremental traversal of a single edge
+ * Ideal weight: the summation of all negative edges in the graph
+
+The algorithm can detect negative weight cycles if the weight of a path exceeds
+the ideal weight of the graph. A path can only have weight smaller than 
+the ideal weight of the graph if and only if there exists a negative cycle 
+along the path.
 
 Modified BFS from wikipedia (modifications are commented):
 
