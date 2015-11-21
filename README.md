@@ -57,7 +57,7 @@ Step-Expansion(G, v):
         u = Q.dequeue()
     
         if(u is vertex)                                 //if this is avertex 
-            for each edge e from u to v:                //for each outgoing edge
+            for each edge e from u to n:                //for each outgoing edge
                 step(e)                                 //run step-subroutine 
         if(u is edge)                                   //if this is an edge
             step(u)                                     //run step-subroutine on this edge
@@ -70,12 +70,12 @@ step(Edge e):
     if e.step > factor                              //if edge requires stepping
         e.step = e.step - 1                         //step on edge
         Q.enqueue(e)                                //enqueue this edge
-    else if v.distance > v.distance + e.weight:     //else if node is not visited
-        if v.distance < absoluteMinimum             //detect negative cycle
-            v.distance = -INF                       //set distance as -INF
+    else if n.distance > n.distance + e.weight:     //else if node is not visited
+        if n.distance < absoluteMinimum             //detect negative cycle
+            n.distance = -INF                       //set distance as -INF
         else
-            v.distance = u.distance + e.weight      //relax using weight of edge
-        v.parent = u
-        Q.enqueue(v)
+            n.distance = u.distance + e.weight      //relax using weight of edge
+        n.parent = u
+        Q.enqueue(n)
 </source>
 
