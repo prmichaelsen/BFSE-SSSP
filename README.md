@@ -58,7 +58,7 @@ Step-Expansion(G, v):
     
         if(u is vertex)                                 //if this is avertex 
             for each edge e from u to v:                //for each outgoing edge
-                step(edge)                              //run step-subroutine 
+                step(e)                                 //run step-subroutine 
         if(u is edge)                                   //if this is an edge
             step(u)                                     //run step-subroutine on this edge
             
