@@ -135,7 +135,7 @@ public class BFSETest {
 	
 	@Test //negative cycles
 	//exp output for
-	//distance: [-inf,-inf,-inf]
+	//distance: [-inf,-inf,-inf, 0, 1]
 	public void test011(){
 		
 		BFSE bfse = new BFSE();
@@ -147,6 +147,20 @@ public class BFSETest {
 		bfse.addEdge(-3, 2, 0);
 		
 		bfse.sssp(3);
+	}
+	
+	@Test //negative cycles
+	//exp output for
+	//distance: [-inf,-inf, 0]
+	public void test012(){
+		
+		BFSE bfse = new BFSE();
+	
+		bfse.addEdge(1, 0, 1);
+		bfse.addEdge(-2, 1, 0);
+		bfse.addEdge(1, 2, 1);
+		
+		bfse.sssp(2);
 	}
 
 }
