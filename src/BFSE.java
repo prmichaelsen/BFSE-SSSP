@@ -86,6 +86,9 @@ public class BFSE {
 			Object item = queue.poll();
 			int initial;
 			Edge expanded;
+			
+			// if this is a vertex
+			// explore the neighbors
 			if(item instanceof Integer){
 				initial = (Integer) item;
 				Iterator<Edge> it;
@@ -97,75 +100,19 @@ public class BFSE {
 					
 					//for each edge from this vertex
 					while(it.hasNext()){
+						
 						//get the edge
 						Edge edge = it.next();
-						int weight = edge.getWeight();
-						int step = edge.getStep();
-						int terminal = edge.getTerminal();
-					
-						//check to see if this 
-						//edge is fully traversed
-						if(step>factor){
-							
-							//if the edge is not 
-							//traversed, then move
-							//up edge one step
-							edge.setStep(step-1);
-							queue.add(edge);
-						
-						}
-						//check to see if the
-						//terminal vertex at this
-						//edge has been visited
-						else if(ssspDistance.get(terminal) > ssspDistance.get(initial) + weight){
-						
-							//check for negative cycle
-							if(ssspDistance.get(terminal)<absoluteMinimum){
-								ssspDistance.set(terminal, NEG_INF);
-							}else{
-								//relax this edge
-								ssspDistance.set(terminal, ssspDistance.get(initial)+weight);
-							}
-							
-							ssspParent.set(terminal,initial);
-							queue.add(terminal);
-						}
+						step(edge, queue, ssspParent, ssspDistance);
 					}
 				}
-			}else if(item instanceof Edge){
-				expanded = (Edge) item;
-				initial = expanded.getInitial();
-				int weight = expanded.getWeight();
-				int step = expanded.getStep();
-				int terminal = expanded.getTerminal();
 			
-				//check to see if this 
-				//edge is fully traversed
-				if(step>factor){
-					
-					//if the edge is not 
-					//traversed, then move
-					//up edge one step
-					expanded.setStep(step-1);
-					queue.add(expanded);
+			//if this is an edge
+			//increment the edge's step
+			}else if(item instanceof Edge){
 				
-				}//check to see if the
-				//terminal vertex at this
-				//edge has been visited
-				else if(ssspDistance.get(terminal) > ssspDistance.get(initial) + weight){
-				
-					//check for negative cycle
-					if(ssspDistance.get(terminal)<absoluteMinimum){
-						ssspDistance.set(terminal, NEG_INF);
-					}else{
-						//relax this edge
-						ssspDistance.set(terminal, ssspDistance.get(initial)+weight);
-					}
-					
-					ssspParent.set(terminal,initial);
-					queue.add(terminal);
-
-				}
+				expanded = (Edge) item;
+				step(expanded, queue, ssspParent, ssspDistance);
 			}
 		}
 		
@@ -176,6 +123,47 @@ public class BFSE {
 		return ssspDistance;
 	}
 	
+	public void step(Edge edge, Queue<Object> queue, 
+			ArrayList<Integer> ssspParent, 
+			ArrayList<Integer> ssspDistance){
+	
+		int weight = edge.getWeight();
+		int initial = edge.getInitial();
+		int terminal = edge.getTerminal();
+		int step = edge.getStep();
+	
+		//check to see if this 
+		//edge is fully traversed
+		if(step>factor){
+			
+			//if the edge is not 
+			//traversed, then move
+			//up edge one step
+			//and add the edge 
+			//to the queue
+			edge.setStep(step-1);
+			queue.add(edge);
+		}
+		//check to see if the
+		//terminal vertex at this
+		//edge has been visited
+		else if(ssspDistance.get(terminal) > ssspDistance.get(initial) + weight){
+		
+			//check for negative cycle
+			if(ssspDistance.get(terminal)<absoluteMinimum){
+				ssspDistance.set(terminal, NEG_INF);
+			}else{
+				//relax this edge
+				ssspDistance.set(terminal, ssspDistance.get(initial)+weight);
+			}
+			
+			ssspParent.set(terminal,initial);
+			
+			//mark the terminal vertex
+			//for exploration
+			queue.add(terminal);
+		}
+	}
 
 	@Override
 	public String toString() {
