@@ -162,5 +162,59 @@ public class BFSETest {
 		
 		bfse.sssp(2);
 	}
+	
+	@Test //massive weight range
+	public void test013(){
+		
+		BFSE bfse = new BFSE();
+	
+		bfse.addEdge(1, 0, 1);
+		bfse.addEdge(0x0F_FF_FF_FF - 1, 0, 2);
+		
+		bfse.sssp(0);
+	}
+	
+	@Test //large weight range
+	public void test014(){
+		
+		BFSE bfse = new BFSE();
+	
+		bfse.addEdge(1, 0, 1);
+		bfse.addEdge(1000, 0, 2);
+		
+		bfse.sssp(0);
+	}
+	
+	@Test //large weight range
+	public void test015(){
+		
+		BFSE bfse = new BFSE();
+	
+		bfse.addEdge(1, 0, 1);
+		bfse.addEdge(10000, 0, 2);
+		
+		bfse.sssp(0);
+	}
+	
+	@Test //large weight range
+	public void test016(){
+		
+		BFSE bfse = new BFSE();
+	
+		bfse.addEdge(1, 0, 1);
+		bfse.addEdge(10000, 0, 2);
+		bfse.addEdge(10000, 0, 3);
+		bfse.addEdge(10000, 0, 4);
+		bfse.addEdge(10000, 0, 5);
+		bfse.addEdge(10000, 0, 6);
+		bfse.addEdge(10000, 0, 7);
+		bfse.addEdge(10000, 0, 8);
+		bfse.addEdge(10000, 0, 9);
+		bfse.addEdge(10000, 0, 10);
+		bfse.addEdge(10000, 0, 11);
+		bfse.addEdge(10000, 0, 12);
+		
+		bfse.sssp(0);
+	}
 
 }
