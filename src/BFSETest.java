@@ -5,7 +5,7 @@ import org.junit.Test;
 public class BFSETest {
 
 	@Test
-	public void test() {
+	public void test000() {
 		assertEquals(true, (new Edge(1,0,1).compareTo(new Edge(1,0,1))==0));
 		assertEquals(true, (new Edge(2,0,1).compareTo(new Edge(1,0,1))==1));
 		assertEquals(true, (new Edge(1,1,2).compareTo(new Edge(1,0,1))==1));
@@ -13,7 +13,7 @@ public class BFSETest {
 	}
 	
 	@Test
-	public void test2(){
+	public void test002(){
 		
 		BFSE bfse = new BFSE();
 		
@@ -26,7 +26,7 @@ public class BFSETest {
 	}
 	
 	@Test
-	public void test3(){
+	public void test003(){
 		
 		BFSE bfse = new BFSE();
 		
@@ -39,7 +39,7 @@ public class BFSETest {
 	}
 	
 	@Test
-	public void test4(){
+	public void test004(){
 		
 		BFSE bfse = new BFSE();
 		
@@ -50,7 +50,7 @@ public class BFSETest {
 	}
 	
 	@Test
-	public void test5(){
+	public void test005(){
 		
 		BFSE bfse = new BFSE();
 		
@@ -62,7 +62,7 @@ public class BFSETest {
 	}
 	
 	@Test
-	public void test6(){
+	public void test006(){
 		
 		BFSE bfse = new BFSE();
 		
@@ -77,7 +77,7 @@ public class BFSETest {
 	
 	//negative edge weights
 	@Test
-	public void test7(){
+	public void test007(){
 		
 		BFSE bfse = new BFSE();
 		
@@ -91,7 +91,7 @@ public class BFSETest {
 	
 	//cycles
 	@Test
-	public void test8(){
+	public void test008(){
 		
 		BFSE bfse = new BFSE();
 		
@@ -106,7 +106,7 @@ public class BFSETest {
 	
 	//cycles
 	@Test
-	public void test9(){
+	public void test009(){
 		
 		BFSE bfse = new BFSE();
 		
@@ -115,6 +115,21 @@ public class BFSETest {
 		bfse.addEdge(1, 2, 3);
 		bfse.addEdge(1, 3, 0);
 		bfse.addEdge(2, 0, 3);
+		
+		bfse.sssp(0);
+	}
+	
+	@Test //negative cycles
+	//test should fail
+	//exp output for
+	//distance: [-inf,-inf,-inf]
+	public void test010(){
+		
+		BFSE bfse = new BFSE();
+		
+		bfse.addEdge(1, 0, 1);
+		bfse.addEdge(1, 1, 2);
+		bfse.addEdge(-3, 2, 0);
 		
 		bfse.sssp(0);
 	}
