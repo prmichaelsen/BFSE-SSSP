@@ -74,5 +74,49 @@ public class BFSETest {
 		bfse.sssp(0);
 		
 	}
+	
+	//negative edge weights
+	@Test
+	public void test7(){
+		
+		BFSE bfse = new BFSE();
+		
+		bfse.addEdge(-2, 0, 1);
+		bfse.addEdge(-1, 0, 2);
+		bfse.addEdge(-1, 2, 1);
+
+		bfse.sssp(0);
+		
+	}
+	
+	//cycles
+	@Test
+	public void test8(){
+		
+		BFSE bfse = new BFSE();
+		
+		bfse.addEdge(1, 0, 1);
+		bfse.addEdge(1, 1, 2);
+		bfse.addEdge(1, 2, 3);
+		bfse.addEdge(1, 3, 0);
+		bfse.addEdge(4, 0, 3);
+		
+		bfse.sssp(0);
+	}
+	
+	//cycles
+	@Test
+	public void test9(){
+		
+		BFSE bfse = new BFSE();
+		
+		bfse.addEdge(1, 0, 1);
+		bfse.addEdge(1, 1, 2);
+		bfse.addEdge(1, 2, 3);
+		bfse.addEdge(1, 3, 0);
+		bfse.addEdge(2, 0, 3);
+		
+		bfse.sssp(0);
+	}
 
 }
