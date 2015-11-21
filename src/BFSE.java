@@ -3,8 +3,8 @@ import java.io.*;
 
 public class BFSE {
 	
-	private static final Integer INF = 0x0F_FF_FF;
-	private static final Integer NEG_INF = - 0x0F_FF_FF;
+	private static final Integer INF = 0x0F_FF_FF_FF;
+	private static final Integer NEG_INF = 0xF0_00_00_01;
 	private ArrayList<ArrayList<Edge>> adjList;
 	private ArrayList<Integer> distance;
 	private ArrayList<Integer> parent;
