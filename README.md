@@ -11,12 +11,12 @@ The algorithm runs in O(V + E*W) where W is the maximum edge weight in the graph
 ## Effectiveness
 The algorithm should be effective on any directed graph with arbitrary weights. The algorithm is an improvement over naïve BFS SSSP. BFS SSSP will always produce correct output for any DAG if and only if edge weight is constant across all edges. BFS Step-Expansion SSSP corrects this. Therefore, BFSE is effective for any positive weighted DAG. Further modifications to BFSE allow for it to be effective on any directed graph with arbitrary weights with or without cycles.
 
-Formal proof and more inclusive testing is required to substantiate my claim that BFSE can produce correct output for any arbitrarily weighted graph with or without cycles. So far, in my limited testing, I have not discovered a counter-example.
+Formal proof and more inclusive testing is required to substantiate this claim. So far, in my limited testing, I have not discovered a counter-example.
 
 ## Algorithm
 The algorithm introduces three new properties: factor, step, and ideal weight.
-In order to use step-expansion, a graph must track 
-step for each edge along with the factor and ideal weight for itself. 
+In order to use step-expansion, a graph must track factor and ideal weight.
+Additionally, each edge must track step.
 The algorithm can be optimized a bit by storing 
 these values instead of finding them each time BFSE is called.
 
@@ -45,8 +45,8 @@ Step-Expansion(G, v):
     for each edge e in G                                //initialize step for each edge
         factor = min(factor, e.weight)                  //factor = minimum edge weight in graph
         e.step = e.weight                               //step for each edge is initialized to edge weight
-        if(e.weight<0)                                  //if the edge is negative
-            absoluteMinimum += e.weight                 //contribute to absolute minimum possible weight of graph
+        if(e.weight<0)                                  //if the edge is negative then it contributes
+            absoluteMinimum += e.weight                 //to the absolute minimum possible weight of graph
 
     create empty queue Q                                //this queue will hold vertices and edges
                                                         //as opposed to just vertices
