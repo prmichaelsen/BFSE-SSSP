@@ -3,6 +3,8 @@ This is an explanation on finding the single-source shortest path using a modife
 It accomplishes this by simulating extra steps in the traversal process by "expanding"
 a large weighted edge into several segmented edges or "steps".
 
+Initially, the step-expansion only worked on arbirtrarily weighted DAG. This stage of development can be found under the "DAG" branch.
+
 ## Time Complexity
 The algorithm runs in O(V + E*W) where W is the maximum edge weight in the graph. More precisely, the algorithm runs in O(V + E + W) time where W is the summation of all edge weights minus the total number of edges times the minimum edge weight. I use E + W because each edge e will be processed at least once and w as many times where w is the the difference between e.weight and the  minimum edge weight. Therefore complexity is the sum of the number of vertices, the number of edges, and the number of additional times all edges have to be processed.
 
