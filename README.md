@@ -11,7 +11,7 @@ The algorithm runs in O(V + E*W) where W is the maximum edge weight in the graph
 ## Effectiveness
 The algorithm should be effective on any directed graph with arbitrary weights. The algorithm is an improvement over naïve BFS SSSP. BFS SSSP will always produce correct output for any DAG if and only if edge weight is constant across all edges. BFS Step-Expansion SSSP corrects this. Therefore, BFSE is effective for any positive weighted DAG. Further modifications to BFSE allow for it to be effective on any directed graph with arbitrary weights with or without cycles.
 
-Formal proof and more inclusive testing is required to substantiate my claim that BFSE can produce correct output for any arbitrarily weighted graph with or without cycles. So far, in my limited testing, I have not discovered a counter-example.
+Formal proof and more inclusive testing is required to substantiate this claim. So far, in my limited testing, I have not discovered a counter-example.
 
 ## Algorithm
 The algorithm introduces three new properties: factor, step, and ideal weight.
