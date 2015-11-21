@@ -7,7 +7,7 @@ a large weighted edge into several segmented edges or "steps".
 The algorithm runs in O(V + E*W) where W is the maximum edge weight in the graph. More precisely, the algorithm runs in O(V + E + W) time where W is the summation of all edge weights minus the total number of edges times the minimum edge weight. I use E + W because each edge e will be processed at least once and w as many times where w is the the difference between e.weight and the  minimum edge weight. Therefore complexity is the sum of the number of vertices, the number of edges, and the number of additional times all edges have to be processed.
 
 ## Effectiveness
-The algorithm should be effective on any Directed Acyclic Graph. The algorithm is an improvement over naïve BFS SSSP. BFS SSSP will always produce correct output for any DAG if and only if edge weight is constant across all edges. BFS Step-Expansion SSSP corrects this. Therefore, BFSE is effective for any arbitrarily weighted graph with or without cycles.
+The algorithm should be effective on any directed graph with arbitrary weights. The algorithm is an improvement over naïve BFS SSSP. BFS SSSP will always produce correct output for any DAG if and only if edge weight is constant across all edges. BFS Step-Expansion SSSP corrects this. Therefore, BFSE is effective for any positive weighted DAG. Further modifications to BFSE allow for it to be effective on any directed graph with arbitrary weights with or without cycles.
 
 Formal proof and more inclusive testing is required to substantiate my claim that BFSE can produce correct output for any arbitrarily weighted graph with or without cycles. So far, in my limited testing, I have not discovered a counter-example.
 
@@ -25,7 +25,8 @@ these values instead of finding them each time BFSE is called.
 The algorithm can detect negative weight cycles if the weight of a path exceeds
 the ideal weight of the graph. A path can only have weight smaller than 
 the ideal weight of the graph if and only if there exists a negative cycle 
-along the path.
+along the path. That is, the ideal weight is the smallest possible weight
+a path can have without using a negative weight cycle.
 
 Modified BFS from wikipedia (modifications are commented):
 
@@ -45,7 +46,8 @@ Step-Expansion(G, v):
         if(e.weight<0)                                  //if the edge is negative
             absoluteMinimum += e.weight                 //contribute to absolute minimum possible weight of graph
 
-    create empty queue Q      
+    create empty queue Q                                //this queue will hold vertices and edges
+                                                        //as opposed to just vertices
 
     v.distance = 0
     Q.enqueue(v)                      
@@ -54,11 +56,11 @@ Step-Expansion(G, v):
     
         u = Q.dequeue()
     
-        if(u is vertex)
-            for each edge e from u to n:
-                step(edge)
-        if(u is edge)
-            step(u)
+        if(u is vertex)                                 //if this is avertex 
+            for each edge e from u to n:                //for each outgoing edge
+                step(edge)                              //run step-subroutine 
+        if(u is edge)                                   //if this is an edge
+            step(u)                                     //run step-subroutine on this edge
             
 </source>
 
