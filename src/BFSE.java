@@ -116,12 +116,49 @@ public class BFSE {
 			}
 		}
 		
+		System.out.println("Naïve Gabow:");
 		System.out.println("Distances: " + ssspDistance);
 		System.out.println("Parents: " + ssspParent);
 		System.out.println();
 		
 		return ssspDistance;
 	}
+	
+	// O(VE)
+	public ArrayList<Integer> bfsssp(int source){
+			
+			//copy over everything so we don't destroy the original graph
+			ArrayList<Integer> ssspParent = new ArrayList<Integer>(parent);
+			ArrayList<Integer> ssspDistance = new ArrayList<Integer>(distance);
+			ArrayList<ArrayList<Edge>> ssspAdjList = new ArrayList<ArrayList<Edge>>(adjList);
+			
+			//set source values
+			ssspDistance.set(source, 0);
+			
+			for(int i = 0; i < ssspAdjList.size();i++){
+				ArrayList<Edge> edges = ssspAdjList.get(i);
+				if(edges!=null)
+					for(int j = 0; j < edges.size(); j++){
+						Edge edge = edges.get(j);
+						int weight = edge.getWeight();
+						int initial = i;
+						int terminal = edge.getTerminal();
+						
+						//relax routine
+						if(ssspDistance.get(terminal)>ssspDistance.get(initial) + weight){
+							ssspDistance.set(terminal, ssspDistance.get(initial) + weight);
+							ssspParent.set(terminal,initial);
+						}
+					}
+			}
+			
+			System.out.println("Bellman-Ford:");
+			System.out.println("Distances: " + ssspDistance);
+			System.out.println("Parents: " + ssspParent);
+			System.out.println();
+			
+			return ssspDistance;
+		}
 	
 	public void step(Edge edge, Queue<Object> queue, 
 			ArrayList<Integer> ssspParent, 
