@@ -12,9 +12,10 @@ public class BFSETest {
 	public static void setUp(){
 		_bfse = new BFSE();
 		
-		int max = 500;
+		int max = 3000;
+		int range = 1500;
 		for(int i=0; i < max*5; i++){
-			_bfse.addEdge((int)(Math.random()*50), (int)(Math.random()*(max-1)), (int)(Math.random()*(max-1)));
+			_bfse.addEdge((int)(Math.random()*range+1), (int)(Math.random()*(max-1)), (int)(Math.random()*(max-1)));
 		}
 		System.out.println(_bfse);
 	}
@@ -340,17 +341,19 @@ public class BFSETest {
 		bfse.bfsssp(0);
 	}
 
-	@Test //random large graph
+	@Test //random large graph with bellmanfordsmoore
 	public void test021(){
-		System.out.println("test021 random very large graph");
+		System.out.println("test021 random very large graph bellmanfordsmoore");
+		
+		_bfse.bfsssp(0);
+	}
+	
+	@Test //random large graph with Gabow
+	public void test022(){
+		System.out.println("test022 random very large graph");
 		
 		_bfse.sssp(0);
 	}
 	
-	@Test //random large graph with bellmanfordsmoore
-	public void test022(){
-		System.out.println("test022 random very large graph bellmanfordsmoore");
-
-		_bfse.bfsssp(0);
-	}
+	
 }
