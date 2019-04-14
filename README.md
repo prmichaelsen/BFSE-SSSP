@@ -1,4 +1,5 @@
 # Introduction to Step-Expansion
+>Note: This algorithm is better known as [Gabow's SSSP algorithm](https://en.wikipedia.org/wiki/Gabow%27s_algorithm).
 This is an explanation on finding the single-source shortest path using a modifed breadth-first-search algorithm called  "step-expansion". Step-expansion can solve SSSP on cyclic graphs with arbitrary edge weight. 
 It accomplishes this by simulating extra steps in the traversal process by "expanding"
 a large weighted edge into several segmented edges or "steps".
