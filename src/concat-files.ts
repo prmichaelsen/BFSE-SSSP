@@ -3,60 +3,61 @@
 import fs from 'fs';
 import path from 'path';
 import yargs from 'yargs';
+import fastGlob from 'fast-glob';
 
-async function readFilesRecursive(directory: string): Promise<string[]> {
+function readFilesRecursiveSync(
+  directory: string,
+  ignoreHidden: boolean,
+  includePaths: string[],
+  excludePaths: string[],
+  outputFileName: string
+): string[] {
   const fileContents: string[] = [];
 
-  return new Promise<string[]>((resolve, reject) => {
-    fs.readdir(directory, (err: NodeJS.ErrnoException | null, files: string[]) => {
-      if (err) {
-        reject(`Error reading directory ${directory}: ${err}`);
-        return;
+  const files = fs.readdirSync(directory);
+
+  const filteredFiles = ignoreHidden ? files.filter(file => !file.startsWith('.')) : files;
+
+  filteredFiles.forEach((file: string) => {
+    const filePath = path.join(directory, file);
+    const relativeFilePath = path.relative(directory, filePath);
+
+    // Check if the current file is the output file, if yes, then skip it
+    if (path.resolve(filePath) === path.resolve(outputFileName)) {
+      return;
+    }
+
+    const isIncluded = includePaths.some(pattern => fastGlob.sync(pattern, { cwd: directory }).includes(relativeFilePath));
+    const isExcluded = excludePaths.some(pattern => fastGlob.sync(pattern, { cwd: directory }).includes(relativeFilePath));
+
+    if (isIncluded && !isExcluded) {
+      const stats = fs.statSync(filePath);
+      if (stats.isDirectory()) {
+        const contents = readFilesRecursiveSync(directory, ignoreHidden, includePaths, excludePaths, outputFileName);
+        fileContents.push(...contents);
+      } else if (stats.isFile()) {
+        const data = fs.readFileSync(filePath, 'utf8');
+        fileContents.push(`=== ${relativeFilePath} ===\n${data}\n`);
       }
-
-      const promises: Promise<void>[] = files.map((file: string) => {
-        const filePath = path.join(directory, file);
-        return new Promise<void>((resolve, reject) => {
-          fs.stat(filePath, (err: NodeJS.ErrnoException | null, stats: fs.Stats) => {
-            if (err) {
-              reject(`Error getting stats for file ${filePath}: ${err}`);
-              return;
-            }
-
-            if (stats.isDirectory()) {
-              readFilesRecursive(filePath)
-                .then((contents) => {
-                  fileContents.push(...contents);
-                  resolve();
-                })
-                .catch(reject);
-            } else if (stats.isFile()) {
-              fs.readFile(filePath, 'utf8', (err: NodeJS.ErrnoException | null, data: string) => {
-                if (err) {
-                  reject(`Error reading file ${filePath}: ${err}`);
-                  return;
-                }
-
-                fileContents.push(`=== ${filePath} ===\n${data}\n`);
-                resolve();
-              });
-            }
-          });
-        });
-      });
-
-      Promise.all(promises)
-        .then(() => resolve(fileContents))
-        .catch(reject);
-    });
+    }
   });
+
+  return fileContents;
 }
 
-async function concatenateFilesWithNames(directory: string, outputFileName: string) {
+
+async function concatenateFilesWithNames(
+  directory: string,
+  outputFileName: string,
+  ignoreHidden: boolean,
+  includePaths: string[],
+  excludePaths: string[]
+) {
   try {
-    const fileContents = await readFilesRecursive(directory);
+    const fileContents = readFilesRecursiveSync(directory, ignoreHidden, includePaths, excludePaths, outputFileName);
     const outputData = fileContents.join('');
-    fs.writeFile(outputFileName, outputData, 'utf8', (err: NodeJS.ErrnoException | null) => {
+
+    fs.writeFile(outputFileName, outputData, { encoding: 'utf8', flag: 'w' }, (err: NodeJS.ErrnoException | null) => {
       if (err) {
         console.error(`Error writing to output file ${outputFileName}: ${err}`);
       } else {
@@ -68,7 +69,7 @@ async function concatenateFilesWithNames(directory: string, outputFileName: stri
   }
 }
 
-const argv = yargs
+const argv: any = yargs
   .usage('Usage: $0 --dir [directory] --output [output-file]')
   .option('dir', {
     alias: 'd',
@@ -80,8 +81,29 @@ const argv = yargs
     describe: 'Output file path',
     default: 'output.txt',
   })
+  .option('ignoreHidden', {
+    alias: 'i',
+    describe: 'Ignore hidden files (files whose names start with a dot)',
+    boolean: true,
+    default: false,
+  })
+  .option('includePaths', {
+    alias: 'n',
+    describe: 'Include specific file paths using glob syntax (comma-separated)',
+    array: true,
+    default: [],
+  })
+  .option('excludePaths', {
+    alias: 'e',
+    describe: 'Exclude specific file paths using glob syntax (comma-separated)',
+    array: true,
+    default: [],
+  })
   .argv;
 
-const directoryPath = (argv as any).dir;
-const outputFileName = (argv as any).output;
-concatenateFilesWithNames(directoryPath, outputFileName);
+const directoryPath = argv.dir;
+const outputFileName = argv.output;
+const ignoreHidden = argv.ignoreHidden;
+const includePaths = argv.includePaths;
+const excludePaths = argv.excludePaths;
+concatenateFilesWithNames(directoryPath, outputFileName, ignoreHidden, includePaths, excludePaths);
